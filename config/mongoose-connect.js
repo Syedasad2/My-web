@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const config = require("config");
 
-const dbURI = `${config.get("MONGODB_URI")}/schoolmanagement`;
+const dbURI = `${config.get("MONGODB_URI")}/myweb`;
 
 mongoose
   .connect(dbURI)

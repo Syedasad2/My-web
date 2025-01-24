@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("./config/mongoose-connect"); 
 const path = require("path");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
