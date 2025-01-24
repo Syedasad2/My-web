@@ -2,17 +2,21 @@ const express = require("express");
 const mongoose = require("./config/mongoose-connect"); 
 const path = require("path");
 const cookieParser = require("cookie-parser");
-require("dotenv").config();
+const cors = require('cors');
+require('dotenv').config();
 const flash = require("connect-flash");
+
 // Routers
 const adminRouter = require("./routes/adminRouter");
 const userRouter = require("./routes/userRouter");
 const attendanceRouter = require("./routes/attendanceRouter");
 const classRouter = require("./routes/classRouter");
-const app = express();
+
+const app = express(); // Initialize app here
 const PORT = 4000;
 
 // Middleware
+app.use(cors()); // Make sure cors is used after initializing app
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
