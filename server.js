@@ -16,7 +16,7 @@ const app = express(); // Initialize app here
 const PORT = 4000;
 
 // Middleware
-app.use(cors()); // Make sure cors is used after initializing app
+app.use(cors()); 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
