@@ -29,7 +29,7 @@ app.use(session({
   secret: process.env.SECRET_KEY,  // Secret key from .env
   resave: false,
   saveUninitialized: true,
-  cookie: { httpOnly: true, secure: process.env.NODE_ENV === "production" }  // Security: Use `secure` in production
+  cookie: { httpOnly: true, secure: process.env.NODE_ENV === "production" ? true : false }  // Secure cookies for production
 }));
 
 app.use(express.static(path.join(__dirname, "public")));
@@ -37,9 +37,10 @@ app.set("view engine", "ejs");
 
 // Routes
 app.use('/admin', adminRouter);
-app.use("/user", userRouter);
-app.use("/guarantor", guarantorRouter);  // Corrected 'Gurantor' to 'guarantor'
+app.use("/users", userRouter);
+app.use("/guarantor", guarantorRouter);  
 app.use("/loan", loanRouter);
+
 // Default Route
 app.get("/", (req, res) => {
   res.send("Welcome to My Web System");

@@ -13,6 +13,6 @@ router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 
 // Get All Users (for Admin or Admin-like roles)
-router.get("/user", getAllUsers);
+router.get("/", getAllUsers);
 
 module.exports = router;
