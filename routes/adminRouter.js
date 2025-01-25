@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { createAdmin, loginAdmin, logoutAdmin, getAdmin } = require('../controllers/adminAuth');
-const upload = require('../utils/fileUpload');
+const { createAdmin, loginAdmin, logoutAdmin, getAdmin , approveLoan, getPendingLoans} = require('../controllers/adminAuth');
+const upload = require('../utils/fileUpload');  // Ensure you have fileUpload middleware
 
 // Get All Admins
 router.get('/', getAdmin);
@@ -11,6 +11,7 @@ router.post('/create', upload.single('profilePic'), createAdmin);
 
 // Admin Login Route
 router.post('/login', loginAdmin);
+
 
 // Admin Logout Route
 router.post("/logout", logoutAdmin);

@@ -1,5 +1,5 @@
 const express = require("express");
-const mongoose = require("./config/mongoose-connect"); 
+const mongoose = require("./config/mongoose-connect");  // MongoDB connection
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const cors = require('cors');
@@ -8,10 +8,10 @@ const flash = require("connect-flash");
 const session = require('express-session');  // Import express-session
 
 // Routers
-const adminRouter = require("./routes/adminRouter");
+const adminRouter = require('./routes/adminRouter'); 
 const userRouter = require("./routes/userRouter");
-const attendanceRouter = require("./routes/attendanceRouter");
-const classRouter = require("./routes/classRouter");
+const guarantorRouter = require("./routes/GuarantorRouter");  
+const loanRouter = require("./routes/loanRouter");
 
 const app = express(); 
 
@@ -21,23 +21,25 @@ const PORT = process.env.PORT || 4000;
 app.use(cors()); 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(cookieParser());  // Correct cookie parsing
 app.use(flash());
 
+// Session Configuration
 app.use(session({
-  secret: process.env.SECRET_KEY, 
+  secret: process.env.SECRET_KEY,  // Secret key from .env
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: { httpOnly: true, secure: process.env.NODE_ENV === "production" }  // Security: Use `secure` in production
 }));
 
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
 
 // Routes
-app.use("/admin", adminRouter);
+app.use('/admin', adminRouter);
 app.use("/user", userRouter);
-app.use("/attendance", attendanceRouter);
-app.use("/class", classRouter);
+app.use("/guarantor", guarantorRouter);  // Corrected 'Gurantor' to 'guarantor'
+app.use("/loan", loanRouter);
 
 // Default Route
 app.get("/", (req, res) => {
@@ -45,6 +47,6 @@ app.get("/", (req, res) => {
 });
 
 // Start Server
-app.listen(PORT, () =>
+app.listen(PORT, () => 
   console.log(`Server running on http://localhost:${PORT}`)
 );

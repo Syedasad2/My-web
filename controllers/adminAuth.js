@@ -5,9 +5,7 @@ const jwt = require("jsonwebtoken");
 // Admin create route
 module.exports.createAdmin = async function (req, res) {
   try {
-    // Check if the profile picture is uploaded
-    const profilePic = req.file ? req.file.path : null;
-
+    // Check if an admin already exists
     let admin = await AdminModel.find();
     if (admin.length > 0) {
       return res.status(503).send("You don't have permission to create an admin");
@@ -15,14 +13,22 @@ module.exports.createAdmin = async function (req, res) {
 
     const { fullname, email, password } = req.body;
 
+    // Validate required fields
+    if (!fullname || !email || !password) {
+      return res.status(400).send("All fields (fullname, email, password) are required");
+    }
+
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    const profilePic = req.file ? req.file.path : null;  // Handle the file path for profilePic
+
+    // Create a new admin object
     const newAdmin = new AdminModel({
       fullname,
       email,
       password: hashedPassword,
-      profilePic,  // Save the file path to the database
+      profilePic, // Save the file path to the database
     });
 
     // Save admin to database
@@ -39,6 +45,11 @@ module.exports.loginAdmin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    // Validate required fields
+    if (!email || !password) {
+      return res.status(400).send("Email and password are required");
+    }
+
     // Check if admin exists
     const admin = await AdminModel.findOne({ email });
     if (!admin) {
@@ -51,12 +62,12 @@ module.exports.loginAdmin = async (req, res) => {
       return res.status(401).send("Invalid credentials");
     }
 
-    // Generate Token
+    // Generate JWT token
     const token = jwt.sign(
       {
         id: admin._id,
         email: admin.email,
-        role: admin.role,
+        role: admin.role,  // Ensure the admin model has 'role' field if needed
       },
       process.env.JWT_KEY,
       { expiresIn: "1h" }
@@ -73,7 +84,8 @@ module.exports.loginAdmin = async (req, res) => {
 
 // Logout route
 module.exports.logoutAdmin = async function (req, res) {
-  res.send('Logged out successfully');
+  // In this case, we just send a response. You can add further logic to handle session/token logout if needed.
+  res.status(200).send('Logged out successfully');
 };
 
 // Get All Admins route
