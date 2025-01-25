@@ -40,7 +40,6 @@ app.use('/admin', adminRouter);
 app.use("/user", userRouter);
 app.use("/guarantor", guarantorRouter);  // Corrected 'Gurantor' to 'guarantor'
 app.use("/loan", loanRouter);
-
 // Default Route
 app.get("/", (req, res) => {
   res.send("Welcome to My Web System");
