@@ -65,7 +65,7 @@ module.exports.loginAdmin = async (req, res) => {
   }
 };
 
-// Logout route
+
 module.exports.logoutAdmin = async function (req, res) {
   res.status(200).send("Logged out successfully");
 };
