@@ -7,7 +7,7 @@ const loanSchema = mongoose.Schema(
     loanCategory: { type: String, required: true }, // E.g., Personal, Business, etc.
     loanSubCategory: { type: String, required: true }, // E.g., Short-term, Long-term, etc.
     interestRate: { type: Number, required: true }, // Interest rate in percentage
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User"},
     status: { type: String, enum: ["Pending", "Approved", "Rejected"], default: "Pending" }
   },
   { timestamps: true }
