@@ -1,5 +1,6 @@
 const express = require("express");
-const { registerUser, loginUser, logoutUser, getAllUsers } = require("../controllers/userController");
+const { registerUser, loginUser, logoutUser, getAllUsers, } = require("../controllers/userController");
+const isloggedIn = require("../middlewares/isloggedIn");
 
 const router = express.Router();
 
@@ -10,7 +11,7 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 
 // Logout User
-router.post("/logout", logoutUser);
+router.post("/logout", isloggedIn,logoutUser);
 
 // Get All Users (for Admin or Admin-like roles)
 router.get("/", getAllUsers);
