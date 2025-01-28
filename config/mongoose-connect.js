@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
-require('dotenv').config();  
+require("dotenv").config();
 
-const dbURI = `${process.env.DB_URI}/myweb`;  
+const dbURI = `${process.env.DB_URI}/myweb`;
 
 mongoose
-  .connect(dbURI)  // Remove deprecated options
+  .connect(dbURI)
   .then(() => {
     console.log("MongoDB connected successfully!");
   })

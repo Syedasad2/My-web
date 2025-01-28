@@ -10,7 +10,11 @@ const registerUser = async (req, res) => {
 
     // Validate incoming data
     if (!Cnic || !fullname || !email || !password) {
-      return res.status(400).send({ message: "All fields (Cnic, fullname, email, password) are required." });
+      return res
+        .status(400)
+        .send({
+          message: "All fields (Cnic, fullname, email, password) are required.",
+        });
     }
 
     // Check if the user already exists
@@ -35,12 +39,19 @@ const registerUser = async (req, res) => {
     const token = generateToken(newUser);
 
     // Set the token in a cookie (optional)
-    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === "production" });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
 
-    res.status(201).send({ message: "User created successfully", user: newUser });
+    res
+      .status(201)
+      .send({ message: "User created successfully", user: newUser });
   } catch (err) {
     console.error("Error occurred during registration:", err.message);
-    res.status(500).send({ message: "An error occurred during signup. Please try again." });
+    res
+      .status(500)
+      .send({ message: "An error occurred during signup. Please try again." });
   }
 };
 
@@ -59,14 +70,19 @@ const loginUser = async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
     if (match) {
       const token = generateToken(user);
-      res.cookie("token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production" });
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+      });
       res.status(200).send({ message: "You are logged in", user: user });
     } else {
       res.status(400).send({ message: "Invalid email or password" });
     }
   } catch (err) {
     console.error("Login error:", err.message);
-    res.status(500).send({ message: "An error occurred during login. Please try again." });
+    res
+      .status(500)
+      .send({ message: "An error occurred during login. Please try again." });
   }
 };
 
@@ -74,11 +90,13 @@ const loginUser = async (req, res) => {
 const logoutUser = async (req, res) => {
   try {
     // Clearing the cookie with the token
-    res.clearCookie('token');
+    res.clearCookie("token");
     res.status(200).send({ message: "Logged out successfully" });
   } catch (err) {
     console.error("Logout error:", err.message);
-    res.status(500).send({ message: "An error occurred during logout. Please try again." });
+    res
+      .status(500)
+      .send({ message: "An error occurred during logout. Please try again." });
   }
 };
 
@@ -88,17 +106,36 @@ const getAllUsers = async (req, res) => {
     if (!users || users.length === 0) {
       return res.status(404).send({ message: "No users found." });
     }
-    res.status(200).json(users);  // Send all users as a response
+    res.status(200).json(users); // Send all users as a response
   } catch (error) {
     console.error("Error fetching users:", error.message);
-    res.status(500).send({ message: "Error fetching users. Please try again." });
+    res
+      .status(500)
+      .send({ message: "Error fetching users. Please try again." });
   }
 };
+// Dashboard Functionality
+const getUserDashboard = async (req, res) => {
+  try {
+    const userId = req.user._id;  // Get the logged-in user from the req.user object
+    const userData = await userModel.findById(userId);  // Find user by ID
 
+    if (!userData) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    // You can add more specific data here, like the user's requests, etc.
+    res.status(200).json({ message: "User Dashboard", user: userData });
+  } catch (error) {
+    console.error("Error fetching dashboard data:", error.message);
+    res.status(500).send({ message: "Error fetching dashboard data" });
+  }
+};
 
 module.exports = {
   registerUser,
   loginUser,
   logoutUser,
   getAllUsers,
+  getUserDashboard,
 };

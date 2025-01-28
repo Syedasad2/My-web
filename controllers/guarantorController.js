@@ -4,10 +4,26 @@ const UserModel = require("../models/user");
 // Create Guarantor
 module.exports.createGuarantor = async (req, res) => {
   try {
-    const { fullName, cnic, phoneNumber, email, address, relationship, userId } = req.body;
+    const {
+      fullName,
+      cnic,
+      phoneNumber,
+      email,
+      address,
+      relationship,
+      userId,
+    } = req.body;
 
     // Validate required fields
-    if (!fullName || !cnic || !phoneNumber || !email || !address || !relationship || !userId) {
+    if (
+      !fullName ||
+      !cnic ||
+      !phoneNumber ||
+      !email ||
+      !address ||
+      !relationship ||
+      !userId
+    ) {
       return res.status(400).send("All fields are required");
     }
 

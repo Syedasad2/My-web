@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 // Admin creation route
 module.exports.createAdmin = async function (req, res) {
   try {
-    // Check if an admin already exists
     let admin = await AdminModel.find();
     if (admin.length > 0) {
       return res.status(403).send("Admin creation is not allowed");
@@ -14,7 +13,9 @@ module.exports.createAdmin = async function (req, res) {
 
     // Validate required fields
     if (!fullname || !email || !password) {
-      return res.status(400).send("All fields (fullname, email, password) are required");
+      return res
+        .status(400)
+        .send("All fields (fullname, email, password) are required");
     }
 
     // Create a new admin
@@ -64,7 +65,6 @@ module.exports.loginAdmin = async (req, res) => {
     res.status(500).send("An error occurred: " + error.message);
   }
 };
-
 
 module.exports.logoutAdmin = async function (req, res) {
   res.status(200).send("Logged out successfully");
