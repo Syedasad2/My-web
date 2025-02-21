@@ -22,11 +22,7 @@ module.exports.createLoan = async (req, res) => {
       !interestRate ||
       !userId
     ) {
-      return res
-        .status(400)
-        .send(
-          "All fields (loanAmount, loanPeriod, loanCategory, loanSubCategory, interestRate, userId) are required"
-        );
+      return res.status(400).send("All fields are required (loanAmount, loanPeriod, loanCategory, loanSubCategory, interestRate, userId).");
     }
 
     // Check if the user exists
@@ -51,7 +47,8 @@ module.exports.createLoan = async (req, res) => {
 
     res.status(201).send("Loan request created successfully");
   } catch (error) {
-    res.status(500).send("An error occurred: " + error.message);
+    console.error("Error creating loan:", error.message);
+    res.status(500).send("An error occurred while creating the loan request: " + error.message);
   }
 };
 
@@ -60,21 +57,21 @@ module.exports.getLoans = async (req, res) => {
   try {
     const loans = await LoanModel.find().populate("userId", "fullname email"); // Populate user details
 
+    if (!loans.length) {
+      return res.status(404).send("No loans found.");
+    }
+
     res.status(200).json(loans);
   } catch (error) {
-    res
-      .status(500)
-      .send("An error occurred while fetching loans: " + error.message);
+    console.error("Error fetching loans:", error.message);
+    res.status(500).send("An error occurred while fetching loans: " + error.message);
   }
 };
 
 // Get Loan by ID (for a specific user)
 module.exports.getLoanById = async (req, res) => {
   try {
-    const loan = await LoanModel.findById(req.params.id).populate(
-      "userId",
-      "fullname email"
-    );
+    const loan = await LoanModel.findById(req.params.id).populate("userId", "fullname email");
 
     if (!loan) {
       return res.status(404).send("Loan not found");
@@ -82,7 +79,8 @@ module.exports.getLoanById = async (req, res) => {
 
     res.status(200).json(loan);
   } catch (error) {
-    res.status(500).send("An error occurred: " + error.message);
+    console.error("Error fetching loan by ID:", error.message);
+    res.status(500).send("An error occurred while fetching the loan: " + error.message);
   }
 };
 
@@ -93,22 +91,21 @@ module.exports.updateLoanStatus = async (req, res) => {
     const { loanId } = req.params;
 
     if (!status) {
-      return res.status(400).send("Status is required");
+      return res.status(400).send("Status is required.");
     }
 
     const loan = await LoanModel.findById(loanId);
     if (!loan) {
-      return res.status(404).send("Loan not found");
+      return res.status(404).send("Loan not found.");
     }
 
     // Update the loan status
     loan.status = status;
     await loan.save();
 
-    res.status(200).send("Loan status updated successfully");
+    res.status(200).send("Loan status updated successfully.");
   } catch (error) {
-    res
-      .status(500)
-      .send("An error occurred while updating loan status: " + error.message);
+    console.error("Error updating loan status:", error.message);
+    res.status(500).send("An error occurred while updating loan status: " + error.message);
   }
 };

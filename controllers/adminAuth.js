@@ -65,10 +65,17 @@ module.exports.loginAdmin = async (req, res) => {
     res.status(500).send("An error occurred: " + error.message);
   }
 };
+// logout
 
 module.exports.logoutAdmin = async function (req, res) {
-  res.status(200).send("Logged out successfully");
+  try {
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Logout failed", error: error.message });
+  }
 };
+
+
 
 // Get All Admins route
 module.exports.getAdmin = async function (req, res) {
