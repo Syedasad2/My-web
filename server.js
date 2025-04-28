@@ -1,11 +1,11 @@
 const express = require("express");
-const mongoose = require("./config/mongoose-connect"); // MongoDB connection
+const mongoose = require("./config/mongoose-connect");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 require("dotenv").config();
 const flash = require("connect-flash");
-const session = require("express-session"); 
+const session = require("express-session");
 
 // Routers
 const adminRouter = require("./routes/adminRouter");
@@ -15,7 +15,7 @@ const loanRouter = require("./routes/loanRouter");
 
 const app = express();
 
-const PORT = process.env.PORT || 4000;
+const PORT = 4003;
 
 // Middleware
 app.use(cors());
