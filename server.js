@@ -10,7 +10,7 @@ const session = require("express-session");
 // Routers
 const adminRouter = require("./routes/adminRouter");
 const userRouter = require("./routes/userRouter");
-const guarantorRouter = require("./routes/GuarantorRouter");
+// const guarantorRouter = require("./routes/GuarantorRouter");
 const loanRouter = require("./routes/loanRouter");
 
 const app = express();
@@ -27,13 +27,13 @@ app.use(flash());
 // Session Configuration
 app.use(
   session({
-    secret: process.env.SECRET_KEY, // Secret key from .env
+    secret: process.env.SECRET_KEY, 
     resave: false,
     saveUninitialized: true,
     cookie: {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production" ? true : false,
-    }, // Secure cookies for production
+    }, 
   })
 );
 
@@ -43,7 +43,7 @@ app.set("view engine", "ejs");
 // Routes
 app.use("/admin", adminRouter);
 app.use("/users", userRouter);
-app.use("/guarantor", guarantorRouter);
+// app.use("/guarantor", guarantorRouter);
 app.use("/loan", loanRouter);
 
 // Default Route
