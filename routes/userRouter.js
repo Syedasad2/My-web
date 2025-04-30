@@ -1,6 +1,6 @@
 const express = require("express");
 const { registerUser, loginUser, logoutUser, getAllUsers, getUserDashboard } = require("../controllers/userController");
-const isloggedIn = require("../middlewares/isloggedIn");
+// const isloggedIn = require("../middlewares/isloggedIn");
 
 const router = express.Router();
 
@@ -14,9 +14,9 @@ router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 
 // Get All Users (for Admin or Admin-like roles)
-router.get("/", isloggedIn, getAllUsers);  // Protected route for admins or authenticated users
+router.get("/", getAllUsers);  // Protected route for admins or authenticated users
 
 // User Dashboard (protected route)
-router.get("/dashboard", isloggedIn, getUserDashboard);  // Only accessible if logged in
+router.get("/dashboard", getUserDashboard);  // Only accessible if logged in
 
 module.exports = router;
