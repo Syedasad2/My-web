@@ -48,7 +48,7 @@ app.use("/loan", loanRouter);
 
 // Default Route
 app.get("/", (req, res) => {
-  res.send("Welcome to My Web System");
+  res.send("Welcome to My Web System check /users,/admin, /loan");
 });
 
 // Start Server
