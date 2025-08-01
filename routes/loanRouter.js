@@ -5,7 +5,7 @@ const { createLoan, getLoans, getLoanById, updateLoanStatus } = require('../cont
 // Create Loan
 router.post('/create', createLoan);
 
-// Get All Loans
+
 router.get('/', getLoans);
 
 // Get Loan by ID
